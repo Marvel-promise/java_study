@@ -1,0 +1,105 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.net.URL;
+public class jframe extends JFrame {
+    //Swing组件的使用
+    private int count = 0;
+    private Image img;
+    private JProgressBar progressBar;
+    public void Grate(){
+        JFrame jf = new JFrame();
+        jf.setTitle("小窗口");
+        Container container = jf.getContentPane();
+        jf.setLayout(new FlowLayout(3,10,10));
+        JButton button1 = new JButton("按钮1");JButton button2 = new JButton("按钮2");JButton button3 = new JButton("按钮3");
+        button1.setSize(40,20);button2.setSize(40,20);button3.setSize(40,20);
+        button1.addActionListener(new AbstractAction() { //事件捕捉
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame j = new JFrame();
+                j.setBounds(100,100,400,200);
+                JButton jb = new JButton("提交");
+                JTextArea jt = new JTextArea();
+                jt.setBounds(0,0,100,100);
+                jt.setText("请输入文档");
+                j.add(jt,BorderLayout.NORTH);
+                j.add(jb,BorderLayout.SOUTH);
+                jb.addActionListener(new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JDialog jd = new JDialog(jframe.this);
+                        jd .setBounds(120,120,80,50 );
+                        jd.add(new JLabel("提交成功！！！"));
+                        jd.setVisible(true);
+                    }
+                });
+                j.setVisible(true);
+                j.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            }
+        });
+        button2.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame jft = new JFrame();
+                URL imgUrl = jframe.class.getResource("imge.jpg");
+                img = Toolkit.getDefaultToolkit().getImage(imgUrl);
+                jft.setSize(440,300);
+                jft.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                jft.add(new CanvasPanel(),BorderLayout.CENTER);
+                jft.add(new JLabel("欢迎查看图片"),BorderLayout.NORTH);
+                jft.setResizable(false);//窗口放大功能
+                jft.setTitle("查看图片");
+                jft.setVisible(true);
+            }
+        });
+        button3.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame Jframe1 = new JFrame();
+                Jframe1.setTitle("Swing高级插件使用");
+                final JSplitPane  jSplitPane1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+                JSplitPane js2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+                JButton buttonone = new JButton("填入");
+                JButton butttontow = new JButton("删除");
+                JTextField jTextField = new JTextField("输入你想输入的东西");
+                JTabbedPane pane = new JTabbedPane();
+                pane.addTab("选项卡1",new JTable() );
+                js2.setDividerSize(10);
+                jSplitPane1.setDividerSize(20);
+                Jframe1.add(js2,BorderLayout.CENTER);
+                js2.setOneTouchExpandable(true);
+                js2.setRightComponent(jSplitPane1);
+                js2.setLeftComponent(pane);
+                jSplitPane1.setOneTouchExpandable(true);
+                jSplitPane1.setRightComponent(jTextField);
+                JPanel jpan = new JPanel();
+                jpan.add(buttonone,BorderLayout.SOUTH);
+                jpan.add(butttontow,BorderLayout.NORTH);
+                pane.setSize(1000,300);
+                jpan.setSize(200,300);
+                jSplitPane1.setLeftComponent(jpan);
+                Jframe1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                Jframe1.setBounds(100,100,1000,600);
+                Jframe1.setVisible(true);
+            }
+            });
+                container.add(button1);
+                container.add(button2);
+                container.add(button3);
+                jf.setVisible(true);
+                jf.setBounds(100, 100, 600, 400);
+                jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        }
+    class CanvasPanel extends Canvas{
+        public void paint(Graphics g){
+            super.paint(g);
+            Graphics2D g2 =(Graphics2D) g;
+            g2.drawImage(img,0,0,this);
+        }
+    }
+    public static void main(String[] args) {
+        jframe jf = new jframe();
+        jf.Grate();
+    }
+}
