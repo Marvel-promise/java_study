@@ -1,0 +1,153 @@
+//使用callable接口实现多线程,callable接口需要使用FutureTask类来实现
+//FutureTask类的接口为RunnableFuture接口实现，RunnableFuture有Future接口
+//(主要实现参数和线程控制isDone()判断是否完成cancel()中断任务的执行get()获取callable接口运行结果获取)+Runnable接口实现
+//首先创建FutureTask实例，创建Thread——test实例
+//创建Thread实例运行future
+//主程序
+//public static void main(String[] args) {
+//        FutureTask<String> f = new FutureTask<String>(new Thread_test1());
+//        Thread t = new Thread(f, "Thread_test1");
+//        t.start();
+//        for (int i = 0; i < 10; i++) {
+//            System.out.println("主要部分" + i + "  ***" + new Date().getTime());
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//            try {
+//                System.out.println(f.get());
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//public class Thread_test1 implements Callable<String>{
+//
+//    @Override
+//    public String call() throws Exception {
+//        int  i = 0;
+//        while(true){
+//            Thread.sleep(1000);
+//            if(i != 10){
+//                System.out.println("休眠"+i+"  ***"+new Date().getTime());
+//                i++;
+//            }else break;
+//        }
+//        return "mycallable已完成";
+//    }
+//}
+//使用Runnable接口实现多线程
+//public class Thread_test1 implements Runnable {
+//    private int num = 10;
+////    public Thread_test1(String name) {
+////        this.name = name;
+////    }
+//
+//    @Override
+//    public void run() {
+//        while (true) {
+//            synchronized (""){
+//                try {
+//                    Thread.sleep(1000);
+//                    if (num != 0) {
+//                        System.out.println( "线程数为" + num +"*&*&"+new Date().getTime());
+//                        num--;
+//                    } else
+//                        break;
+//                } catch (InterruptedException e) {
+//                    System.out.println("线程被停止了");
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        }
+//    }
+//}
+//继承Thread类
+/*public class Thread_test1 extends Thread{
+    private int num = 10;
+    private final String name;
+    public Thread_test1(String name){
+        this.name = name;
+    }
+    @Override
+    public void run() {
+        super.run();
+        while(true){
+            try {
+                Thread.sleep(1000);
+                if(num != 0){
+                    System.out.println(name+"线程数为"+num);
+                    num--;
+                }else{
+                    break;
+                }
+            } catch (InterruptedException e) {
+                System.out.println("线程被停止了");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Thread_test1 t1 = new Thread_test1("开始线程");
+        Thread tt1 = new Thread(t1,"线程1");
+        Thread tt2 = new Thread(t1,"线程2");
+        tt1.start();
+        try {
+            Thread.sleep(500);
+            tt2.start();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        while(true){
+            try {
+                Thread.sleep(1000);
+                t1.num++;
+                if(t1.num == 1){
+                    break;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+}*/
+//各线程使用main方法
+/*public class main_class {
+    //线程池创建线程-Executor(工具，帮助使用线程池)
+    //1.使用executors创建线程池
+    public static void main(String[] args) {
+       ExecutorService executorService =  Executors.newFixedThreadPool(5);//创建线程池，此线程池最多有五个线程
+        executorService.execute(new Thread_test1());//线程加入线程池并运行
+
+    }*/
+//    public static void main(String[] args) {
+//        FutureTask<String> f = new FutureTask<String>(new Thread_test1());
+//        Thread t = new Thread(f, "Thread_test1");
+//        t.start();
+//        for (int i = 0; i < 10; i++) {
+//            System.out.println("主要部分" + i + "  ***" + new Date().getTime());
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//            try {
+//                System.out.println(f.get());
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//}
