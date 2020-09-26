@@ -1,0 +1,68 @@
+//线程安全问题事例
+//线程同步方法
+//同步代码块synchronized ("")方法；相当于将多线程转换为单线程模式,在jvm层面的
+//  private Object obj= new Object();//锁对象
+//synchronized ("obj") {//线程同步方法,同步代码块
+//        if (tacketsNum > 0) {//判断是否还有票
+//        try {
+//        Thread.sleep(300);
+//        } catch (InterruptedException e) {
+//        e.printStackTrace();
+//        }
+//        String name = Thread.currentThread().getName();
+//        System.out.println("线程" + name + "售卖的第" + tacketsNum-- + "票");
+//        }
+//        }
+//同步方法synchronized修饰方法，相当于单线程
+//public class Thread_test1 implements Runnable{
+//    private  int tacketsNum = 100;
+//
+//    @Override
+//    public void run() {
+//        while(true){
+//           sale();
+//        }
+//    }
+//    private Object obj = new Object();
+//    private synchronized void sale(){
+//        if(tacketsNum >0){
+//            try {
+//                    Thread.sleep(300);
+//                    } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                    }
+//                    String name = Thread.currentThread().getName();
+//                    System.out.println("线程" + name + "售卖的第" + tacketsNum-- + "票");
+//            }
+//        }
+//    }
+//同步锁方法(ReenreantLock重入锁)lock（）加同步锁unlock（）解开同步锁,在编码级别
+//public class Thread_test1 implements Runnable{
+//    private  int tacketsNum = 100;
+//    private Lock lock= new ReentrantLock(true);//是否公平锁，true是,flase 只有一线程使用(默认)
+//    @Override
+//    public void run() {
+//        while(true){
+//            lock.lock();//上锁
+//            try {
+//                if(tacketsNum >0){
+//                    try {
+//                        Thread.sleep(300);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    String name = Thread.currentThread().getName();
+//                    System.out.println("线程" + name + "售卖的第" + tacketsNum-- + "票");
+//                }
+//            }finally {
+//                lock.unlock();//解锁
+//            }
+//
+//        }
+//    }
+//}
+//特殊锁变量
+//局部变量方法
+//阻塞队列法
+//原子变量法
+
