@@ -1,0 +1,261 @@
+//semaphore方式控制线程对某组资源的访问
+//工人使用机器进行工作
+//public class OddEventdeom{
+//    static class Work implements Runnable{
+//        private int worknum;  //工人号
+//        private Semaphore semaphore;//机器数
+//        public Work(int worknum,Semaphore semaphore){
+//            this.worknum = worknum;this.semaphore = semaphore;
+//        }
+//
+//        @Override
+//        public void run() {
+//            //工人获取机器
+//            try {
+//                semaphore.acquire();
+//                //打印工人获取机器,开始工作
+//                System.out.println(Thread.currentThread().getName()+"获取到机器，开始工作"+new Date().getTime());
+//                //线程打印，开始工作
+//                Thread.sleep(1000);
+//                //释放机器,打印工人使用完毕
+//                semaphore.release();//释放资源
+//                System.out.println(Thread.currentThread().getName()+"使用完毕，关闭机器"+new Date().getTime());
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//    }
+//
+//    public static void main(String[] args) {
+//        int works = 8;
+//        Semaphore s = new Semaphore(3);
+//        for(int i = 0;i < works;i ++){
+//            new Thread(new Work(i+1,s)).start();
+//        }
+//    }
+//}
+
+//使用CyclicBarrier方式实现线程通信java 1.5引用,用于类似多用动员开始跑步的场景
+//实例，三个线程同时使用
+//public class OddEventdeom{
+//    private CyclicBarrier cyclicBarrier = new CyclicBarrier(3);//所有参与的线程数
+//    public void startThread(){
+//        //1.线程准备启动
+//        System.out.println(Thread.currentThread().getName()+"正在准备中");
+//        try {
+//            cyclicBarrier.await();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (BrokenBarrierException e) {
+//            e.printStackTrace();
+//        }
+//        //2.调用CyclicBarrier的await方法等待所用线程都准备好后启动线程
+//        System.out.println(Thread.currentThread().getName()+"已经启动完毕"+new Date().getTime());
+//    }
+//}
+//    OddEventdeom od = new OddEventdeom();
+//    Thread thread1 = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            od.startThread();
+//        }
+//    },"线程1");
+//        thread1.start();
+//                Thread thread2 = new Thread(new Runnable() {
+//@Override
+//public void run() {
+//        od.startThread();
+//        }
+//        },"线程2");
+//        thread2.start();
+//        Thread thread3 = new Thread(new Runnable() {
+//@Override
+//public void run() {
+//        od.startThread();
+//        }
+//        },"线程3");
+//        thread3.start();
+//实例，教练训练运动员为例，教练需要等待所有运动员训练完毕后再训练, CountDownLatch方法实现线程
+//public class OddEventdeom{
+//    private CountDownLatch countDownLatch = new CountDownLatch(3);//设置需要等待的运动员人数
+//
+//
+//    //运动员调用方法
+//    public void racer(){
+//        //获取运动员名称并打印出运动员的名字
+//       String name = Thread.currentThread().getName();
+//       //运动开始运动准备
+//        System.out.println(name + "正在准备...");
+//        //运动员准备时间
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        //运动员准备完毕
+//        System.out.println(name + "准备完毕");
+//        countDownLatch.countDown();
+//    }
+//
+//    //教练调用方法
+//    public void cotch(){
+//        //获取教练线程的名称，教练等待运动员准备完毕
+//        String name = Thread.currentThread().getName();
+//        System.out.println(name+"等待运动员准备...");
+//        //调用countdownlatch的await方法等待完毕
+//        try {
+//            countDownLatch.await();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        //所有运动员准备完毕开始训练
+//        System.out.println(name + "所有运动员已就绪,开始训练");
+//    }
+//}
+//    public static void main(String[] args) {
+//        final OddEventdeom od = new OddEventdeom();
+//        //创建三个线程调用racer模拟运动员
+//        Thread thread1 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                od.racer();
+//            }
+//        },"运动员1");
+//        Thread thread2 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                od.racer();
+//            }
+//        },"运动员2");
+//        Thread thread3 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                od.racer();
+//            }
+//        },"运动员3");
+//        //创建一个线程调用cotch模拟教练
+//        Thread thread4 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                od.cotch();
+//            }
+//        },"教练");
+//        thread4.start();
+//        thread3.start();
+//        thread1.start();
+//        thread2.start();
+//    }
+//import java.util.concurrent.locks.Condition;
+//import java.util.concurrent.locks.Lock;
+//import java.util.concurrent.locks.ReentrantLock;
+//CountDownLatch方式等待其他线程完成后再执行
+//Condition类等待唤醒方法
+//public static void main(String[] args) {
+//    OddEventdeom od = new OddEventdeom();
+//    Thread thread1 = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            od.odd();
+//        }
+//    });
+//    Thread thread2 = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            od.even();
+//        }
+//    });
+//
+//    thread1.start();
+//    thread2.start();
+//}
+//public class OddEventdeom {
+//    private int i = 0;
+//    //    private Object obj = new Object();
+//    Lock lock = new ReentrantLock();
+//    private Condition con = lock.newCondition();
+//
+//    public void odd() {
+//        //判断小于10的数打印奇数
+//        while (i < 10) {
+//            lock.lock();
+//            try {
+//                if (i % 2 == 1) {
+//                    System.out.println("奇数" + i);
+//                    i++;
+//                    con.signal();//唤醒偶数线程打印
+//                } else {
+//                    try {
+//                        con.await();//等待偶数线程打印完毕
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            } finally {
+//                lock.unlock();
+//            }
+//        }
+//    }
+//
+//    public void even() {
+//        while (i < 10) {
+//            lock.lock();
+//            try {
+//                if (i % 2 == 0) {
+//                    System.out.println("偶数" + i);
+//                    i++;
+//                    con.signal();//唤醒奇数线程打印
+//                } else {
+//                    try {
+//                        con.await();//等待奇数线程打印完毕
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }finally{
+//                    lock.unlock();
+//                }
+//            }
+//        }
+//}
+//等待唤醒方法实现结口处打印
+//public class OddEventdeom {
+//    private int i = 0;
+//    private Object obj = new Object();
+//
+//    public void odd() {
+//        //判断小于10的数打印奇数
+//        while (i < 10) {
+//            synchronized (obj) {
+//                if (i % 2 == 1) {
+//                    System.out.println("奇数" + i);
+//                    i++;
+//                    obj.notify();//唤醒偶数线程打印
+//                } else {
+//                    try {
+//                        obj.wait();//等待偶数线程打印完毕
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
+//    }
+//        public void even () {
+//            while (i < 10) {
+//                synchronized (obj) {
+//                    if (i % 2 == 0) {
+//                        System.out.println("偶数" + i);
+//                        i++;
+//                        obj.notify();//唤醒奇数线程打印
+//                    } else {
+//                        try {
+//                            obj.wait();//等待奇数线程打印完毕
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//}
