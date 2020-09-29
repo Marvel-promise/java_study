@@ -1,0 +1,116 @@
+  //cas解决ＡＢＡ问题
+//    static AtomicStampedReference<Integer> atomicStampedReference;
+//
+//    public static void main(String[] args) throws InterruptedException {
+//        int j = 0;
+//        while (j < 100){
+//           atomicStampedReference = new AtomicStampedReference<>(0,0);
+//            Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        int stamp;
+//                        Integer integer;
+//                        for(int i = 0;i < 1000;i ++){
+//                          do{
+//                              stamp = atomicStampedReference.getStamp();
+//                              integer = atomicStampedReference.getReference();
+//                          }while(!atomicStampedReference.compareAndSet(integer,integer+1,stamp,stamp+1));
+//                        }
+//                    }
+//                });
+//                Thread thread1 = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        int stamp;
+//                        Integer integer;
+//                        for(int i = 0;i < 1000;i ++){
+//                            do{
+//                                stamp = atomicStampedReference.getStamp();
+//                                integer = atomicStampedReference.getReference();
+//                            }while(!atomicStampedReference.compareAndSet(integer,integer+1,stamp,stamp+1));
+//                        }
+//                    }
+//                });
+//                thread.start();
+//                thread1.start();
+//                thread.join();
+//                thread1.join();
+//                j++;
+//                System.out.println("n的最终值为"+atomicStampedReference.getReference());
+//        }
+    //多线程原子类的操作
+//1.AtomicBoolean,AtomicInteger,AtomicLong基本类型
+//2.更新数组类型AtomicIntegerArray,AtomicLongArray
+//3.更新引用（对象属性）类型 AtomicReference,AtomicStampedReference等
+//4.更新属性类型AtomicIntegerFieldUpdater,AtomicLongFieldUpdater类
+    //使用原子类操作++类型
+//    static AtomicInteger atomicInteger;
+//    public static void main(String[] args) {
+//        int j = 0;
+//        while (j < 100){
+//            atomicInteger = new AtomicInteger(0);//创建原子整数初始值为0
+//            try {
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        for(int i = 0;i < 1000;i ++){
+//                            atomicInteger.getAndIncrement();//对应n++操作
+//                        }
+//                    }
+//                });
+//                Thread thread1 = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        for(int i = 0;i < 1000;i ++){
+//                            atomicInteger.getAndIncrement();
+//                        }
+//                    }
+//                });
+//                thread.start();
+//                thread1.start();
+//                thread.join();
+//                thread1.join();
+//                j++;
+//                System.out.println("n的最终值为"+atomicInteger.get());
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+    }
+
+// static private int n;//执行n++操作的变量
+//非原子操作引起加法错误
+//    public static void main(String[] args) {
+//        int j = 0;
+//        while (j < 100){
+//            n = 0;
+//            try {
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        for(int i = 0;i < 1000;i ++){
+//                            n ++;
+//                        }
+//                    }
+//                });
+//                Thread thread1 = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        for(int i = 0;i < 1000;i ++){
+//                            n ++;
+//                        }
+//                    }
+//                });
+//                thread.start();
+//                thread1.start();
+//                thread.join();
+//                thread1.join();
+//                j++;
+//                System.out.println("n的最终值为"+n);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
