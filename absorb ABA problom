@@ -1,0 +1,93 @@
+//CAS的ABA问题并解决
+//并发容器ConcurrentHashMap,CopyOnWriteArrayList,CopyOnWriteArraySet,ConcurrentSkipListMap,ConcurrentSkipListSet,ConcurrentLinkLinkedQueue
+//Volatile修饰后的变量为一个共享变量，其中一个线程改变变量的值时，其他线程能够看见该变量的变化
+//不能重排序（int i = 1; i =1 ; i =2 ;i =3;没有Volatile修饰的将只执行i= 3;)
+//应用条件Volatile修饰变量不能与没有修饰的一起用
+//双重校验
+//常用于常态量标记
+////模拟银行转账ThreadLocal类使用,是每个线程通过调用initialValue()拿到每个线程的值，保存就保存到自己的本地变量中
+//public class OddEventdeom {
+//    //创建银行类,可执行存款，取款操作
+//    static class Bank {
+//        private ThreadLocal<Integer> threadLocal = new ThreadLocal<Integer>() {
+//            protected Integer initialValue() {
+//                return 0;
+//            }
+//        };
+//
+//        public Integer get() {
+//            return threadLocal.get();
+//        }
+//
+//        public void set(Integer money) {
+//            threadLocal.set(threadLocal.get() + money);
+//        }
+//    }
+//
+//    //转账操作，银行一个账户转入另一个账户
+//    static class Transfer implements Runnable {
+//        private Bank bank;
+//
+//        public Transfer(Bank bank) {
+//            this.bank = bank;
+//        }
+//
+//        @Override
+//        public void run() {
+//            for (int i = 0; i < 10; i++) {
+//                bank.set(10);
+//                System.out.println(Thread.currentThread().getName() + "账户余额" + bank.get());
+//            }
+//        }
+//    }
+//
+//    public static void main(String[] args) {
+//        Bank bank = new Bank();
+//        Transfer transfer = new Transfer(bank);
+//        Thread thread1 = new Thread(transfer, "客户1");
+//        Thread thread2 = new Thread(transfer, "客户2");
+//        thread1.start();
+//        thread2.start();
+//
+//    }
+//}
+//
+
+
+//semaphore方式控制线程对某组资源的访问
+//工人使用机器进行工作
+//public class OddEventdeom{
+//    static class Work implements Runnable{
+//        private int worknum;  //工人号
+//        private Semaphore semaphore;//机器数
+//        public Work(int worknum,Semaphore semaphore){
+//            this.worknum = worknum;this.semaphore = semaphore;
+//        }
+//
+//        @Override
+//        public void run() {
+//            //工人获取机器
+//            try {
+//                semaphore.acquire();
+//                //打印工人获取机器,开始工作
+//                System.out.println(Thread.currentThread().getName()+"获取到机器，开始工作"+new Date().getTime());
+//                //线程打印，开始工作
+//                Thread.sleep(1000);
+//                //释放机器,打印工人使用完毕
+//                semaphore.release();//释放资源
+//                System.out.println(Thread.currentThread().getName()+"使用完毕，关闭机器"+new Date().getTime());
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//    }
+//
+//    public static void main(String[] args) {
+//        int works = 8;
+//        Semaphore s = new Semaphore(3);
+//        for(int i = 0;i < works;i ++){
+//            new Thread(new Work(i+1,s)).start();
+//        }
+//    }
+//}
