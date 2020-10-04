@@ -1,0 +1,106 @@
+package work_times;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+
+public class min_times extends JFrame{
+    private final JButton start_jb = new JButton("START");
+    private final JButton stop_jb = new JButton("STOP");
+    private final JButton clear = new JButton("reset");
+    private final JLabel jLabel = new JLabel("0.00");
+    private final JButton survey = new JButton("survey");
+    DecimalFormat df   = new DecimalFormat("######0.00");
+    final JScrollPane jScrollPane = new JScrollPane();
+    private int number = 1;
+    String[][] table_value;
+    private String[] table_un= {"名次","成绩"};
+    DefaultTableModel tableModel = new DefaultTableModel(table_value,table_un);
+    private JTable table;
+
+    private final Thread thread = new Thread(new Runnable(){
+        @Override
+        public synchronized void run() {
+            while(true){
+                if(!fal){
+                    try {
+                        Thread.sleep(10);
+                        num+= 0.01;
+                        jLabel.setText(" "+df.format(num));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        break;
+                    }
+                }else {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                }
+            }
+
+    }, "秒表计时线程");
+    class JB_source implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource()==start_jb){
+                if(fal == false)
+                thread.start();
+                else fal = false;
+                start_jb.setEnabled(false);
+                stop_jb.setEnabled(true);
+                clear.setEnabled(true);
+            }else if(e.getSource() == clear){
+                jLabel.setText("0.00");
+                num = 0.00000;
+                fal = true;
+                clear.setEnabled(false);
+                start_jb.setEnabled(true);
+                stop_jb.setEnabled(false);
+            }else if(e.getSource() == survey){
+                String[] row_value = {String.valueOf(number),jLabel.getText()};
+                tableModel.addRow(row_value);
+                number++;
+            }
+            else{
+                fal = true;
+                stop_jb.setEnabled(false);
+                start_jb.setEnabled(true);
+                clear.setEnabled(true);
+            }
+
+        }
+    }
+    private Boolean fal = false;
+    private double num = 0.00000;
+    public Component Set_Bounds(){
+        Container container = this.getContentPane();
+        table = new JTable(tableModel);
+        jLabel.setFont(new Font("黑体",Font.PLAIN,40));
+        jLabel.setSize(30,20);
+        container.setLayout(new GridLayout(2,1));
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new FlowLayout());
+        jPanel.add(jLabel);
+        jPanel.add(start_jb);
+        jPanel.add(stop_jb);
+        jPanel.add(clear);
+        jPanel.add(survey);
+        container.add(jPanel);
+        jScrollPane.add(table);
+        jScrollPane.setViewportView(table);
+        container.add(jScrollPane);
+        start_jb.addActionListener(new JB_source());
+        stop_jb.addActionListener(new JB_source());
+        clear.addActionListener(new JB_source());
+        survey.addActionListener(new JB_source());
+        this.setSize(300,200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        return container;
+    }
+}
