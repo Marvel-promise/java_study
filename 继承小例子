@@ -1,0 +1,66 @@
+abstract class GeometricObject {
+    public int color;
+    public abstract double getArea();//抽象方法
+    public String toString(){
+        return ", color("+ Integer.toString(color) +")";
+    }
+    public void display(){
+        System.out.println(this);
+    }
+}
+class Circle extends GeometricObject{
+    double radius;
+    Circle(double radius)
+    {
+        this.radius = radius;
+    }
+    @Override
+    public double getArea() {
+        return radius*radius*3.141826535;
+    }
+    public String toString(){
+        return "Circle: radius("+radius+"),area("+ getArea()+")";
+    }
+}
+class Rectangle extends GeometricObject{
+    int R_long;
+    int R_width;
+    Rectangle(int R_long,int R_width){this.R_long = R_long;this.R_width = R_width;}
+    public String toString(){
+        return "Rectangle: length("+R_long+"), width("+R_width+"),area("+getArea()+")";
+    }
+    @Override
+    public double getArea() {
+        return R_long*R_width;
+    }
+}
+class triangle extends GeometricObject{
+    int a_side;
+    int b_side;
+    int c_side;
+    public triangle(int a_side,int b_side,int c_side){
+        this.a_side= a_side;this.b_side = b_side;this.c_side = c_side;
+    }
+    @Override
+    public double getArea() {
+        double cos = square(a_side)+square(b_side)-square(c_side);
+        double ca = cos/(2*a_side*c_side);
+        double cb = Math.sqrt(1-ca*ca);
+        return a_side*b_side*cb/2;
+    }
+    public String toString(){
+        return "Triangle:side:("+a_side+"、"+b_side+"、"+c_side+"),area("+getArea()+")";
+    }
+    private double square(double a){return a*a;}
+}
+class DrawingGraphics{
+    GeometricObject[] geometries = {new Circle(3),new Rectangle(3,4),new triangle(1,2,3) };
+    public void display(){
+        for(int i= 0;i <geometries.length;i++){
+            geometries[i].display();
+        }
+    }
+    public static void main(String[] args) {
+            new DrawingGraphics().display();
+    }
+}
