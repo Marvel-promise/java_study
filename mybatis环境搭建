@@ -1,0 +1,71 @@
+1.框架：是整个或部分系统的可重用设计，表现为一组抽象构件，软件开发中的一套解决方案，不同框架解决不同问题
+使用框架的好处：框架封装了很多细节，使开发者可以极简的方式实现功能，大大提高开发效率
+三层架构：表现层
+                是用来展示数据的
+        业务层
+                是处理业务需求
+        持久层
+                是和数据库交互的
+  //持久层技术的解决方案
+  //          JDBC技术：
+  //                  Connection
+  //                  PreparedStatement
+  //                  ResultSet
+  //          Spring的JDBCTemplate：
+  //                  Spring中对jdbc的简单封装
+  //          Apache的DBUtils：对jdbc的简单封装
+  以上都不是框架，JDBC是规范
+            Spring的JdbcTemplate和Apache的Dbutils都只是工具类
+Mybatis的概述，是一个持久层的框架，它封装了jdbc操作的很多细节，使开发者只关注sql语句本身
+无需关注注册驱动，创建连接的复杂过程，它使用了ORM思想集的封装
+ORM：
+Object Relational Mapping 对象关系映射，及把数据库表和实体类及实体类对象的属性对应起来
+让我们可以操作实体类就实现操作数据库表。
+/**
+*实体类中的属性和数据库表的字段名称保持一致
+**/
+
+mybatis的环境搭建：
+        第一步：创建Maven工程并导入坐标
+        第二步：创建实体类和dao接口
+        第三步：创建Mybatis的主配置文件 SqlMapConfig.xml
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE configuration
+                PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-config.dtd">
+        <!--mybatis 的主配置文件-->
+        <configuration>
+        <!--    配置环境-->
+            <environments default="mysql">
+        <!--        配置mysql的环境-->
+                <environment id ="mysql">
+        <!--            配置事务类型-->
+                    <transactionManager type="JDBC"></transactionManager>
+        <!--            配置数据源，也叫连接池-->
+                    <dataSource type="POOLED">
+        <!--               配置连接数据库的四个基本信息 -->
+                        <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                        <property name="url" value="jdbc:mysql://127.0.0.1:3306/db"/>
+                        <property name="username" value="root"/>
+                        <property name="password" value="071126"/>
+                    </dataSource>
+                </environment>
+        
+            </environments>
+        
+        <!--    指定映射配置文件的位置，映射配置文件指的是每个dao独立配置文件-->
+            <mappers>
+                <mapper resource="com.itwang.dao.IUserDao.xml"></mapper>
+            </mappers>
+        </configuration>
+        第四步：创建映射配置文件 IUserDao.xml
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <mapper namespace="com.itwang.dao.IUserDao">
+        <!--    配置查询所有-->
+        <select id="findAll">
+         select *from user
+         </select>
+        </mapper>
