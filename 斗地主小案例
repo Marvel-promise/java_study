@@ -1,0 +1,85 @@
+public class Deom01 extends JFrame{
+    /**
+     * 斗地主综合案例：
+     * 1.准备牌
+     * 2.洗牌
+     * 3.发牌
+     * 4.排序
+     * 5.看牌
+     **/
+    //准备牌，创建一个Map集合，存储的牌索引和组装好的牌
+    HashMap<Integer,String> poker;
+    //创建一个list集合，存储牌的索引
+    ArrayList<Integer> pokerIndex;
+    public static void main(String[] args) {
+            new Deom01().setD();
+    }
+    public void setD(){
+        poker = new HashMap<>();
+        pokerIndex = new ArrayList<>();
+        //定义一个集合，存储花色和牌的序号
+        List<String> colors = List.of("♠","♥","♣","♦");
+        List<String> numbers =  List.of("2","A","K","Q","J","10","9","8","7","6","5","4","3");
+        //把大王和小王存储到集合中
+        int Index = 0;
+        poker.put(Index,"大王");
+        pokerIndex.add(Index);
+        Index++;
+        poker.put(Index,"小王");
+        pokerIndex.add(Index);
+        Index++;
+        //循环嵌套组合存储52张牌
+        for (String number: numbers) {
+            for (String color:colors) {
+                poker.put(Index,color+number);
+                pokerIndex.add(Index);
+                Index++;
+            }
+        }
+        /*System.out.println(poker);
+        System.out.println(pokerIndex);*/
+        //洗牌Collections.shuffle(List)
+        Collections.shuffle(pokerIndex);
+        /*System.out.println(pokerIndex);*/
+        //发牌,存储玩家牌的索引
+        ArrayList<Integer> player1 = new ArrayList<>();
+        ArrayList<Integer> player2 = new ArrayList<>();
+        ArrayList<Integer> player3 = new ArrayList<>();
+        ArrayList<Integer> di = new ArrayList<>();
+        for (int i = 0; i < pokerIndex.size() ; i++) {
+            Integer in = pokerIndex.get(i);
+            if(i >= 51){
+                di.add(in);
+            }else{
+                switch(i%3){
+                    case  0:
+                        player1.add(in);
+                        break;
+                    case  1:
+                        player2.add(in);
+                        break;
+                    case  2:
+                        player3.add(in);
+                        break;
+                }
+            }
+        }
+        //排序默认升序
+        Collections.sort(player1);Collections.sort(player2);Collections.sort(player3);Collections.sort(di);
+        //看牌，调用看牌的方法
+        view("张三",poker,player1);
+        view("李四",poker,player2);
+        view("王二",poker,player3);
+        view("底牌",poker,di);
+    }
+    //定义看牌方法，参数：总牌，玩家名，玩家牌的索引
+    public void view(String name,HashMap<Integer,String> poker,ArrayList<Integer> list){
+        //输出玩家名字
+        System.out.print(name+": ");
+        for(Integer key:list){
+            String value = poker.get(key);
+            System.out.print(value+", ");
+        }
+        System.out.println();
+    }
+}
