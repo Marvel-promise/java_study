@@ -1,0 +1,40 @@
+环境搭建：
+1.安装node.js(http://www.runoob.com/nodejs/nodejs-install-setup.html)
+3.10.10
+
+2.基于node.js,利用淘宝npm镜像安装相关依赖
+
+ 在cmd里直接输入：npm install -g cnpm --registry=http://registry.npm.taobao.org，回车，等待安装...
+
+3.安装全局vue-cli脚手架,用于帮助搭建所需的模板框架
+
+在cmd里 1)输入：npm install -g @vue/cli，回车，等待安装...
+
+            2).输入：vue，回车，若出现vue信息说明表示成功
+以上的内容，只要安装成功一次就可以了，以后在也不用安装了
+---------------------------------------------------------------------------------------------------------
+创建项目：
+vue create 项目文件夹名(不用提前建，自动会创建)
+安装依赖：cd 项目名
+          npm install  回车等待完成
+运行项目：
+   npm run serve 命令的方式
+   localhost:8080
+
+如果运行不了，请在次安装npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+eslint千万不要选，对语法要求太严格，不好调试
+
+-------------------------------------------------------------------------------------------------
+安装element ui
+cnpm i element-ui -s
+
+安装axios
+cnpm install axios -s
+
+安装vuex
+npm install vuex --s
+
+安装base64和md5
+cnpm install --save js-base64
+cnpm install --save js-md5
